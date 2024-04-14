@@ -1,0 +1,126 @@
+{% comment %} {% load static %} {% endcomment %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Recipe Details</title>
+    <style>
+      .delete-button {
+        background-color: #f44336; /* Red */
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      .delete-button:hover {
+        background-color: #d32f2f; /* Darker Red */
+      }
+      .update-button {
+        background-color: #4caf50; /* Green */
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      /* Change background color on hover */
+      .update-button:hover {
+        background-color: #45a049; /* Darker Green */
+      }
+      .recipe-input {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+        font-size: 16px;
+      }
+
+      /* Style for recipe description textarea */
+      .recipe-textarea {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+        color: black;
+        resize: vertical; /* Allow vertical resizing */
+      }
+
+      form {
+        display: inline-block;
+      }
+      label {
+        display: block; /* Make labels appear on a new line */
+        font-weight: bold; /* Make labels bold */
+        margin-bottom: 5px; /* Add some space below each label */
+        color: #333; /* Set label text color */
+      }
+
+      hr {
+        border: none; /* Remove the default border */
+        height: 1px; /* Set the height of the line */
+        background-color: #ccc; /* Set the background color */
+        margin: 20px 0; /* Add some vertical margin for spacing */
+      }
+
+      /* Optional: Add more styles to create decorative effects */
+      /* For example, you can add gradient or shadow effects */
+      /* Here's an example with a gradient effect */
+      hr.gradient {
+        background-image: linear-gradient(to right, #ccc, #333, #ccc);
+      }
+    </style>
+  </head>
+  <body>
+    {% for recipe in recipes %}
+    <div>
+      <form action="/update/{{ recipe.id }}/" method="post">
+        {% csrf_token %}
+        <label for="recipe_name">RECIPE NAME:</label>
+        <input
+          type="text"
+          id="recipe_name"
+          name="recipe_name"
+          class="recipe-input"
+          value="{{ recipe.recipe_name }}"
+        />
+        <label for="recipe_description">RECIPE DESCRIPTION:</label>
+        <textarea
+          id="recipe_description"
+          name="recipe_description"
+          class="recipe-textarea"
+          rows="4"
+        >
+{{recipe.recipe_description}}
+    </textarea
+        >
+        <img
+          src="/media/{{recipe.image_field}}"
+          alt="Recipe photo"
+          style="height: 200px; width: 200px"
+        />
+        <a href="/delete/{{recipe.id}}" class="delete-button">Delete</a>
+        <button type="submit" class="update-button">Update</button>
+      </form>
+    </div>
+    <hr />
+    {% endfor %}
+  </body>
+</html>
